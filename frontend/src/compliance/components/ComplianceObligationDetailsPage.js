@@ -154,6 +154,7 @@ const ComplianceObligationDetailsPage = (props) => {
             pendingBalanceExist={pendingBalanceExist}
             reportYear={reportYear}
             reportDetails={reportDetails}
+            updatedBalances={updatedBalances}
           />
         </div>
         <h3 className="mt-4 mb-2">Credit Reduction</h3>

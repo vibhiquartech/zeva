@@ -11,7 +11,8 @@ const ComplianceObligationTableCreditsIssued = (props) => {
     reportYear,
     pendingBalanceExist,
     readOnly,
-    supplementalReport
+    supplementalReport,
+    updatedBalances,
   } = props;
 
   const {
@@ -31,6 +32,15 @@ const ComplianceObligationTableCreditsIssued = (props) => {
     transfersIn,
     transfersOut
   } = transactions;
+
+    const finalBalances = updatedBalances.balances || newBalances;
+    const finalRenderBalances = finalBalances.reduce((acc, { modelYear, creditA, creditB }) => {
+    if (acc[modelYear]) {
+      acc[modelYear].A = creditA
+      acc[modelYear].B = creditB
+    }
+    return acc
+  }, creditBalanceStart)
 
   const getNewData = (category, modelYear, value) => {
     if (newData && newData.creditActivity) {
@@ -312,16 +322,16 @@ const ComplianceObligationTableCreditsIssued = (props) => {
               </>
             )}
           </tr>
-          {Object.keys(creditBalanceStart).map((each) => (
+          {Object.keys(finalRenderBalances).map((each) => (
             <tr key={each}>
               <td className="text-blue">&bull; &nbsp; &nbsp; {each} Credits</td>
               <td className="text-right">
-                {formatNumeric(creditBalanceStart[each].A, 2)}
+                {formatNumeric(finalRenderBalances[each].A, 2)}
               </td>
               <td className="text-right">
-                {formatNumeric(creditBalanceStart[each].B, 2)}
+                {formatNumeric(finalRenderBalances[each].B, 2)}
               </td>
-              {supplementalReport && (
+              {/* {supplementalReport && (
                 <>
                   <td>
                     <input
@@ -388,10 +398,10 @@ const ComplianceObligationTableCreditsIssued = (props) => {
                     />
                   </td>
                 </>
-              )}
+              )} */}
             </tr>
           ))}
-          {Object.keys(creditBalanceStart).length === 0 && (
+          {/* {Object.keys(creditBalanceStart).length === 0 && (
             <tr>
               <td className="text-blue">&bull; &nbsp; &nbsp; Credits</td>
               <td className="text-right">0.00</td>
@@ -439,7 +449,7 @@ const ComplianceObligationTableCreditsIssued = (props) => {
                 </>
               )}
             </tr>
-          )}
+          )} */}
         </tbody>
       </table>
 
